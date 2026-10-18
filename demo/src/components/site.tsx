@@ -2,7 +2,8 @@ import { useEffect, useId, useMemo, useRef, useState } from 'react';
 import { NAV, SEARCH_INDEX, type SearchEntry } from '../docs-nav';
 import { Icon } from '../icons';
 import { M2TOOLKIT, PACKAGES_URL, PKG, RELATED } from '../meta';
-import type { Route } from '../router';
+import type { Route, View } from '../router';
+import { CopyButton } from './ui';
 
 /* ---- docs search (combobox) ------------------------------------------------------------- */
 
@@ -114,32 +115,41 @@ export function DocSearch() {
 
 /* ---- header ---------------------------------------------------------------------------------- */
 
+/** Header links, in the order the landing page reads (Docs and Progress are pages of their own). */
 const LINKS: Array<[string, string]> = [
-  ['#gallery', 'Components'],
   ['#playground', 'Playground'],
-  ['#docs-introduction', 'Docs'],
-  ['#api-props', 'API'],
+  ['#layouts', 'Layouts'],
+  ['#start', 'Quick start'],
+  ['#api', 'API'],
+  ['#/docs', 'Docs'],
+  ['#/progress', 'Progress'],
 ];
 
 export function SiteHeader({
   route,
+  view,
+  withSidebar,
   theme,
   onToggleTheme,
   menuOpen,
   onToggleMenu,
 }: {
   route: Route;
+  view: View;
+  withSidebar: boolean;
   theme: 'light' | 'dark';
   onToggleTheme: () => void;
   menuOpen: boolean;
   onToggleMenu: () => void;
 }) {
+  const current = (to: string) => (to === '#/docs' ? route === 'package' && view === 'docs' : to === '#/progress' ? route === 'progress' : false);
   return (
     <header className="dh">
       <div className="dh__inner">
         <button
           type="button"
           className="dh__icon dh__menu"
+          hidden={!withSidebar}
           aria-label={menuOpen ? 'Close navigation' : 'Open navigation'}
           aria-expanded={menuOpen}
           aria-controls="docs-sidebar"
@@ -175,17 +185,20 @@ export function SiteHeader({
             )}
           </ol>
         </nav>
-        <DocSearch />
+        {withSidebar ? <DocSearch /> : <span className="dh__spacer" />}
         <nav className="dh__links" aria-label="Sections">
           {LINKS.map(([to, label]) => (
-            <a key={to} href={to}>
+            <a key={to} href={to} aria-current={current(to) ? 'page' : undefined}>
               {label}
             </a>
           ))}
-          <a href="#/progress" aria-current={route === 'progress' ? 'page' : undefined}>
-            Progress
-          </a>
         </nav>
+        <span className="dh__install">
+          <code>
+            <span aria-hidden="true">$ </span>npm i {PKG.name}
+          </code>
+          <CopyButton text={`npm i ${PKG.name}`} label="" className="dh__install-copy" />
+        </span>
         <button
           type="button"
           className="dh__icon"
@@ -195,6 +208,13 @@ export function SiteHeader({
           <Icon name={theme === 'dark' ? 'sun' : 'moon'} />
         </button>
       </div>
+      <nav className="dh__views" aria-label="Package sections">
+        {LINKS.map(([to, label]) => (
+          <a key={to} href={to} aria-current={current(to) ? 'page' : undefined}>
+            {label}
+          </a>
+        ))}
+      </nav>
     </header>
   );
 }

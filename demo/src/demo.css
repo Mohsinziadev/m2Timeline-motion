@@ -26,6 +26,9 @@
   --shadow-lg: 0 2px 6px rgb(29 33 48 / 0.05), 0 22px 44px -22px rgb(29 33 48 / 0.22);
   --radius: 16px;
   --header-h: 60px;
+  /* header row plus, on smaller screens, the view bar under it */
+  --views-h: 0px;
+  --chrome-h: calc(var(--header-h) + var(--views-h));
 
   --green-bg: #e2f5e6;
   --green-bd: #b0dfb9;
@@ -113,7 +116,7 @@
 }
 html {
   scroll-behavior: smooth;
-  scroll-padding-top: calc(var(--header-h) + 20px);
+  scroll-padding-top: calc(var(--chrome-h) + 20px);
 }
 @media (prefers-reduced-motion: reduce) {
   html {
@@ -432,11 +435,11 @@ kbd {
 }
 .dside {
   position: sticky;
-  top: calc(var(--header-h) + 1rem);
+  top: calc(var(--chrome-h) + 1rem);
   display: grid;
   align-self: start;
   gap: 0.35rem;
-  max-height: calc(100vh - var(--header-h) - 2rem);
+  max-height: calc(100vh - var(--chrome-h) - 2rem);
   padding: 1rem 0 2rem;
   overflow-y: auto;
   scrollbar-width: thin;
@@ -985,7 +988,7 @@ kbd {
 }
 .otp {
   position: sticky;
-  top: calc(var(--header-h) + 1.5rem);
+  top: calc(var(--chrome-h) + 1.5rem);
   grid-column: 2;
   grid-row: 1;
   align-self: start;
@@ -2001,10 +2004,10 @@ kbd {
 }
 .pg__panel {
   position: sticky;
-  top: calc(var(--header-h) + 1rem);
+  top: calc(var(--chrome-h) + 1rem);
   display: flex;
   flex-direction: column;
-  max-height: calc(100vh - var(--header-h) - 3rem);
+  max-height: calc(100vh - var(--chrome-h) - 3rem);
   border: 1px solid var(--border);
   border-radius: 20px;
   background: var(--surface);
@@ -2511,7 +2514,7 @@ kbd {
   }
   .dside {
     position: fixed;
-    top: var(--header-h);
+    top: var(--chrome-h);
     bottom: 0;
     left: 0;
     z-index: 45;
@@ -2536,7 +2539,7 @@ kbd {
   }
   .dscrim {
     position: fixed;
-    inset: var(--header-h) 0 0;
+    inset: var(--chrome-h) 0 0;
     z-index: 44;
     display: block;
     border: 0;
@@ -2672,4 +2675,535 @@ kbd {
   .crumbs .crumbs__mid {
     display: none;
   }
+}
+
+/* =============================================================================================
+   Soft, light redesign: page views (Overview · Components · Playground · Docs) and a gentler
+   light palette. Dark theme keeps its own tokens above.
+   ============================================================================================= */
+
+/* ---- soft light palette ---------------------------------------------------------------------- */
+:root:not([data-theme='dark']) {
+  --bg: #fafafd;
+  --surface-soft: #f6f6fb;
+  --surface-sunken: #f1f1f7;
+  --text: #22253a;
+  --text-2: #4a4e63;
+  --muted: #6b7086;
+  --border: #ebeaf3;
+  --border-strong: #dddbe8;
+  --brand: #6a5ae0;
+  --brand-ink: #5141c4;
+  --brand-soft: #f1effe;
+  --brand-softer: #f8f7ff;
+  --blue-soft: #eef4fe;
+  --shadow-sm: 0 1px 2px rgb(34 37 58 / 0.03);
+  --shadow: 0 1px 2px rgb(34 37 58 / 0.03), 0 8px 24px -14px rgb(34 37 58 / 0.12);
+  --shadow-lg: 0 2px 6px rgb(34 37 58 / 0.04), 0 28px 56px -28px rgb(80 64 180 / 0.22);
+
+  /* light code blocks instead of dark navy panels */
+  --code-bg: #f9f9fd;
+  --code-bar: #f3f3f9;
+  --code-border: #e8e7f1;
+  --code-fg: #2c3045;
+  --tk-c: #8d92a6;
+  --tk-s: #2f8550;
+  --tk-t: #2f63c4;
+  --tk-k: #7442cf;
+  --tk-n: #c25618;
+  --tk-a: #ad3476;
+  --tk-y: #2f63c4;
+}
+:root:not([data-theme='dark']) .install-panel__tab {
+  color: #8a8fa4;
+}
+:root:not([data-theme='dark']) .install-panel__tab:hover {
+  color: var(--text);
+}
+:root:not([data-theme='dark']) .install-panel__tab[aria-selected='true'] {
+  border-bottom-color: var(--brand);
+  color: var(--text);
+}
+:root:not([data-theme='dark']) .install-panel__prompt {
+  color: #a1a6b8;
+}
+:root:not([data-theme='dark']) .install-panel__cmd {
+  color: var(--code-fg) !important;
+}
+:root:not([data-theme='dark']) .code__title {
+  color: #7d8297;
+}
+:root:not([data-theme='dark']) .code .copy-btn,
+:root:not([data-theme='dark']) .install-panel .copy-btn {
+  border-color: var(--code-border);
+  background: #ffffff;
+  color: var(--text-2);
+}
+:root:not([data-theme='dark']) .code .copy-btn:hover,
+:root:not([data-theme='dark']) .install-panel .copy-btn:hover {
+  background: var(--brand-softer);
+  color: var(--brand-ink);
+}
+:root:not([data-theme='dark']) .install-panel {
+  box-shadow: var(--shadow-sm);
+}
+
+/* ---- views ------------------------------------------------------------------------------------- */
+.pview[hidden] {
+  display: none !important;
+}
+.dlayout[data-sidebar='off'] {
+  grid-template-columns: minmax(0, 1fr);
+  max-width: 1280px;
+}
+.psec--view {
+  padding-top: 0.75rem;
+  gap: 1.5rem;
+}
+.vhead {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 0.75rem 2.5rem;
+}
+.vhead__title {
+  margin: 0.35rem 0 0;
+  color: var(--text);
+  font-size: clamp(1.6rem, 1.2rem + 1.4vw, 2.25rem);
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  line-height: 1.1;
+}
+.vhead__title:focus {
+  outline: none;
+}
+.vhead__lead {
+  max-width: 34rem;
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.95rem;
+  line-height: 1.6;
+}
+.vhead__lead strong {
+  color: var(--text-2);
+  font-weight: 600;
+}
+
+/* ---- overview ---------------------------------------------------------------------------------- */
+.ov-hero {
+  display: grid;
+  grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr);
+  align-items: center;
+  gap: clamp(2rem, 4vw, 4rem);
+  padding: clamp(1.75rem, 4vw, 3.5rem);
+  border: 1px solid var(--border);
+  border-radius: 28px;
+  background:
+    radial-gradient(60% 80% at 0% 0%, var(--brand-soft), transparent 70%),
+    radial-gradient(55% 75% at 100% 100%, var(--blue-soft), transparent 70%), var(--surface);
+}
+.ov-hero__pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+}
+.ov-hero__title {
+  margin: 1.1rem 0 0;
+  color: var(--text);
+  font-size: clamp(2.2rem, 1.4rem + 3vw, 3.5rem);
+  font-weight: 750;
+  letter-spacing: -0.045em;
+  line-height: 1.04;
+  text-wrap: balance;
+}
+.ov-hero__title span {
+  background: linear-gradient(95deg, var(--brand), #5b8def);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+.ov-hero__lead {
+  max-width: 34rem;
+  margin: 1rem 0 1.5rem;
+  color: var(--text-2);
+  font-size: 1.07rem;
+  line-height: 1.65;
+}
+.ov-hero .install-panel {
+  max-width: 30rem;
+}
+.ov-hero__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+  margin-top: 1.25rem;
+}
+.ov-window {
+  overflow: hidden;
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  background: var(--surface);
+  box-shadow: var(--shadow-lg);
+}
+.ov-window__bar {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.65rem 0.9rem;
+  border-bottom: 1px solid var(--border);
+  background: var(--surface-soft);
+}
+.ov-window__bar span {
+  width: 0.6rem;
+  height: 0.6rem;
+  border-radius: 50%;
+  background: var(--border-strong);
+}
+.ov-window__bar code {
+  margin-left: 0.5rem;
+  overflow: hidden;
+  padding: 0 !important;
+  background: none !important;
+  color: var(--muted);
+  font-size: 0.74rem;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.ov-window__body {
+  max-height: 440px;
+  overflow: hidden;
+  padding: 1.25rem 1.25rem 0;
+  -webkit-mask-image: linear-gradient(to bottom, #000 82%, transparent);
+  mask-image: linear-gradient(to bottom, #000 82%, transparent);
+}
+.ov-facts {
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  gap: 1px;
+  margin: 1.25rem 0 0;
+  overflow: hidden;
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  background: var(--border);
+}
+.ov-facts > div {
+  padding: 0.95rem 1.15rem;
+  background: var(--surface);
+}
+.ov-facts dt {
+  color: var(--muted);
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+.ov-facts dd {
+  margin: 0.3rem 0 0;
+  color: var(--text);
+  font-size: 0.95rem;
+  font-weight: 600;
+}
+.ov-sec {
+  padding-top: clamp(3rem, 6vw, 4.75rem);
+}
+.ov-sec__head {
+  margin-bottom: 1.5rem;
+}
+.ov-sec__title {
+  margin: 0.4rem 0 0;
+  color: var(--text);
+  font-size: clamp(1.5rem, 1.1rem + 1.4vw, 2.1rem);
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  line-height: 1.15;
+}
+.ov-features,
+.ov-explore,
+.ov-steps {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.ov-features {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1rem;
+}
+.ov-feature {
+  padding: 1.4rem;
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  background: var(--surface);
+}
+.ov-feature__icon,
+.ov-card__icon {
+  display: grid;
+  place-items: center;
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 12px;
+  background: var(--brand-soft);
+  color: var(--brand-ink);
+}
+/* soft, different tints so the grid reads at a glance */
+.ov-feature:nth-child(2) .ov-feature__icon {
+  background: var(--blue-bg);
+  color: var(--blue-fg);
+}
+.ov-feature:nth-child(3) .ov-feature__icon {
+  background: var(--pink-bg);
+  color: var(--pink-fg);
+}
+.ov-feature:nth-child(4) .ov-feature__icon {
+  background: var(--green-bg);
+  color: var(--green-fg);
+}
+.ov-feature:nth-child(5) .ov-feature__icon {
+  background: var(--orange-bg);
+  color: var(--orange-fg);
+}
+.ov-feature:nth-child(6) .ov-feature__icon {
+  background: var(--yellow-bg);
+  color: var(--yellow-fg);
+}
+.ov-feature__title {
+  margin: 1rem 0 0;
+  color: var(--text);
+  font-size: 1.02rem;
+  font-weight: 650;
+}
+.ov-feature__title a {
+  color: inherit;
+  text-decoration: none;
+}
+.ov-feature__title a:hover {
+  color: var(--brand-ink);
+}
+.ov-feature__body {
+  margin: 0.4rem 0 0;
+  color: var(--muted);
+  font-size: 0.92rem;
+  line-height: 1.6;
+}
+.ov-steps {
+  display: grid;
+  gap: 1rem;
+}
+.ov-step {
+  display: grid;
+  grid-template-columns: 2.5rem minmax(0, 1fr);
+  gap: 1.1rem;
+  padding: 1.4rem;
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  background: var(--surface);
+}
+.ov-step__n {
+  display: grid;
+  place-items: center;
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 50%;
+  background: var(--brand-soft);
+  color: var(--brand-ink);
+  font-weight: 700;
+}
+.ov-step__title {
+  margin: 0.4rem 0 0;
+  color: var(--text);
+  font-size: 1.05rem;
+  font-weight: 650;
+}
+.ov-step__text {
+  margin: 0.3rem 0 0.9rem;
+  color: var(--muted);
+  font-size: 0.92rem;
+}
+.ov-explore {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1rem;
+}
+.ov-card {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  padding: 1.5rem;
+  border: 1px solid var(--border);
+  border-radius: 22px;
+  background: linear-gradient(180deg, var(--brand-softer), var(--surface) 65%);
+  color: inherit;
+  text-decoration: none;
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+.ov-card:hover {
+  border-color: color-mix(in srgb, var(--brand) 35%, var(--border));
+  box-shadow: var(--shadow);
+}
+.ov-card__title {
+  margin-top: 1rem;
+  color: var(--text);
+  font-size: 1.15rem;
+  font-weight: 700;
+}
+.ov-card__body {
+  margin-top: 0.35rem;
+  color: var(--muted);
+  font-size: 0.93rem;
+  line-height: 1.55;
+}
+.ov-card__cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  margin-top: auto;
+  padding-top: 1.2rem;
+  color: var(--brand-ink);
+  font-size: 0.92rem;
+  font-weight: 600;
+}
+.ov-related {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.75rem 1.5rem;
+  margin-top: 1.25rem;
+  padding: 1rem 1.25rem;
+  border: 1px dashed var(--border-strong);
+  border-radius: 16px;
+}
+.ov-related__title {
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+.ov-related ul {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem 1.2rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.ov-related a {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  color: var(--text-2);
+  font-size: 0.9rem;
+  text-decoration: none;
+}
+.ov-related a:hover {
+  color: var(--brand-ink);
+}
+.ov-related__all {
+  font-weight: 600;
+}
+
+/* ---- components view: tidy, equal cards ---------------------------------------------------- */
+[data-view='components'] .lcard {
+  border-radius: 20px;
+}
+[data-view='components'] .lcard__preview {
+  max-height: 420px;
+}
+
+/* ---- playground view: room to work ---------------------------------------------------------- */
+[data-view='playground'] .pg {
+  grid-template-columns: 320px minmax(0, 1fr);
+  gap: 1.5rem;
+}
+[data-view='playground'] .pg__canvas {
+  min-height: 560px;
+  border-radius: 22px;
+}
+:root:not([data-theme='dark']) .pg__canvas:not(.pg__canvas--dark),
+:root:not([data-theme='dark']) .ppg__preview:not(.ppg__preview--dark) {
+  background-color: #fbfbfe;
+  background-image: radial-gradient(circle at 1px 1px, rgb(80 70 160 / 0.07) 1px, transparent 0);
+}
+
+/* ---- responsive ------------------------------------------------------------------------------- */
+@media (max-width: 1080px) {
+  .ov-hero {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .ov-facts {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+  .ov-features,
+  .ov-explore {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+@media (max-width: 900px) {
+  [data-view='playground'] .pg {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+@media (max-width: 640px) {
+  .ov-facts {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .ov-features,
+  .ov-explore {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .ov-step {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 0.75rem;
+  }
+  .ov-hero {
+    padding: 1.4rem;
+    border-radius: 22px;
+  }
+}
+
+/* ---- view bar: the package views as tabs under the header, when the header links don't fit ---- */
+.dh__views {
+  display: none;
+}
+@media (max-width: 1280px) {
+  :root {
+    --views-h: 46px;
+  }
+  .dh__views {
+    display: flex;
+    gap: 0.25rem;
+    height: var(--views-h);
+    align-items: center;
+    max-width: 1440px;
+    margin-inline: auto;
+    padding-inline: 1.25rem;
+    overflow-x: auto;
+    border-top: 1px solid var(--border);
+    scrollbar-width: none;
+  }
+  .dh__views a {
+    flex: none;
+    padding: 0.4rem 0.8rem;
+    border-radius: 999px;
+    color: var(--text-2);
+    font-size: 0.86rem;
+    font-weight: 500;
+    text-decoration: none;
+  }
+  .dh__views a[aria-current='page'] {
+    background: var(--brand-soft);
+    color: var(--brand-ink);
+  }
+}
+/* The docs used to follow the playground on one long page; as their own view they start at the top. */
+[data-view='docs'] .docs2 {
+  margin-top: 0;
+  padding-top: 0.5rem;
+  border-top: 0;
+}
+/* No sidebar outside Docs, so no menu button either. */
+.dh__menu[hidden] {
+  display: none !important;
 }
