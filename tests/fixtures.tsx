@@ -1,0 +1,75 @@
+import type { TimelineEvent } from '../src';
+import type { LayoutVariant } from '../src';
+
+/** A rich data set that exercises every optional field. */
+export const events: TimelineEvent[] = [
+  {
+    id: 'kickoff',
+    title: 'Project kickoff',
+    date: '2025-01-06',
+    endDate: '2025-01-17',
+    status: 'completed',
+    category: 'Planning',
+    group: 'Discovery',
+    description: 'Stakeholder interviews and success metrics.',
+    people: [{ name: 'Ava Chen', role: 'PM' }],
+    tags: ['research'],
+    progress: 100,
+  },
+  {
+    id: 'design',
+    title: 'Design system',
+    date: '2025-01-20',
+    endDate: '2025-02-28',
+    status: 'completed',
+    category: 'Design',
+    group: 'Discovery',
+    version: '1.0.0',
+    details: 'Tokens, components and documentation.',
+    changes: [
+      { type: 'added', text: 'Color tokens' },
+      { type: 'fixed', text: 'Focus rings' },
+    ],
+  },
+  {
+    id: 'build',
+    title: 'Core build',
+    date: '2025-03-03',
+    endDate: '2025-05-30',
+    status: 'current',
+    progress: 60,
+    category: 'Engineering',
+    group: 'Delivery',
+    version: '1.1.0',
+    meta: [{ label: 'Owner', value: 'Noah' }],
+    links: [{ label: 'Spec', href: 'https://example.com/spec' }],
+    highlight: true,
+  },
+  {
+    id: 'beta',
+    title: 'Public beta',
+    date: '2025-06-16',
+    status: 'upcoming',
+    category: 'Launch',
+    group: 'Delivery',
+    version: '2.0.0',
+    image: { src: 'https://example.com/beta.png', alt: 'Beta screenshot' },
+  },
+];
+
+export const variants: LayoutVariant[] = [
+  'vertical',
+  'alternating',
+  'horizontal',
+  'roadmap',
+  'gantt',
+  'career',
+  'history',
+  'changelog',
+  'story',
+  'minimal',
+  'cards',
+  'zigzag',
+  'stepper',
+  'feed',
+];

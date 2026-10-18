@@ -1,0 +1,20 @@
+{
+  "slug": "m2timeline-motion",
+  "url": "https://www.m2toolkit.com/npm-packages/m2timeline-motion",
+  "siteName": "M2Toolkit",
+  "ogImage": "https://www.m2toolkit.com/opengraph-image",
+  "accent": "#6550d6",
+  "title": "Timelines",
+  "tagline": "Production-ready timeline and progress components for React.",
+  "highlights": [
+    "14 timeline layouts, from a classic vertical line to Gantt charts, roadmaps and changelogs",
+    "Progress bars, segmented progress, steppers and gauges in the same theme",
+    "Live playground that generates the code for the exact configuration",
+    "Keyboard, screen readers, reduced motion, SSR-safe, zero dependencies"
+  ],
+  "build": {
+    "root": "demo",
+    "viteConfig": "demo/vite.config.ts",
+    "serverEntry": "demo/entry-server.tsx"
+  }
+}

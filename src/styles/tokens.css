@@ -1,0 +1,244 @@
+/* =================================================================================================
+ * m2timeline-motion — design tokens
+ * Every visual decision is a custom property on `.m2t`. Override any of them on `.m2t`, on a
+ * specific timeline (via `className` / `style`), or on an ancestor using `:root .m2t { ... }`.
+ * ===============================================================================================*/
+
+@property --m2t-angle {
+  syntax: '<angle>';
+  inherits: false;
+  initial-value: 0deg;
+}
+
+.m2t {
+  /* palette */
+  --m2t-accent: #4f46e5;
+  --m2t-accent-2: #db2777;
+  --m2t-accent-contrast: #ffffff;
+  --m2t-accent-text: var(--m2t-accent);
+  --m2t-accent-soft: color-mix(in srgb, var(--m2t-accent) 11%, transparent);
+  --m2t-bg: transparent;
+  --m2t-surface: #ffffff;
+  --m2t-surface-2: #f6f7f9;
+  --m2t-surface-3: #eceff3;
+  --m2t-text: #0e1726;
+  --m2t-text-2: #3a4456;
+  --m2t-text-muted: #5d6879;
+  --m2t-border: #e3e7ed;
+  --m2t-border-strong: #cdd3dc;
+  --m2t-line: #d8dde5;
+  --m2t-success: #15803d;
+  --m2t-warning: #b45309;
+  --m2t-danger: #c62828;
+  --m2t-info: #0369a1;
+
+  /* shape */
+  --m2t-radius: 14px;
+  --m2t-radius-sm: calc(var(--m2t-radius) * 0.6);
+  --m2t-line-width: 2px;
+  --m2t-marker-size: 14px;
+  --m2t-marker-size-md: 28px;
+  --m2t-marker-size-lg: 36px;
+  --m2t-shadow-sm: 0 1px 2px rgb(16 24 40 / 0.05);
+  --m2t-shadow: 0 1px 2px rgb(16 24 40 / 0.04), 0 6px 20px -8px rgb(16 24 40 / 0.12);
+  --m2t-shadow-hover: 0 2px 4px rgb(16 24 40 / 0.05), 0 18px 40px -16px rgb(16 24 40 / 0.24);
+
+  /* typography */
+  --m2t-font: inherit;
+  --m2t-font-display: var(--m2t-font);
+  --m2t-font-serif: 'Iowan Old Style', 'Palatino Linotype', Palatino, 'Book Antiqua', Georgia, serif;
+  --m2t-font-mono: ui-monospace, SFMono-Regular, 'SF Mono', Menlo, Consolas, 'Liberation Mono', monospace;
+  --m2t-text-xs: 0.75rem;
+  --m2t-text-sm: 0.8125rem;
+  --m2t-text-base: 0.9375rem;
+  --m2t-title-size: 1.0625rem;
+  --m2t-title-weight: 650;
+
+  /* spacing */
+  --m2t-gap: 1.5rem;
+  --m2t-pad-y: 1.125rem;
+  --m2t-pad-x: 1.25rem;
+  --m2t-stack: 0.5rem;
+
+  /* motion */
+  --m2t-duration: 600ms;
+  --m2t-ease: cubic-bezier(0.22, 1, 0.36, 1);
+  --m2t-ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --m2t-hover-duration: 220ms;
+  --m2t-expand-duration: 380ms;
+  --m2t-sticky-top: 1rem;
+
+  color-scheme: light;
+}
+
+/* ---- dark theme ---------------------------------------------------------------------------- */
+
+.m2t[data-theme='dark'] {
+  --m2t-accent: #818cf8;
+  --m2t-accent-2: #f472b6;
+  --m2t-accent-contrast: #0b1020;
+  --m2t-accent-text: color-mix(in srgb, var(--m2t-accent) 78%, #ffffff);
+  --m2t-accent-soft: color-mix(in srgb, var(--m2t-accent) 18%, transparent);
+  --m2t-surface: #131a28;
+  --m2t-surface-2: #182133;
+  --m2t-surface-3: #212c42;
+  --m2t-text: #eef1f7;
+  --m2t-text-2: #c4cbd8;
+  --m2t-text-muted: #97a2b6;
+  --m2t-border: #253047;
+  --m2t-border-strong: #34415e;
+  --m2t-line: #2e3a55;
+  --m2t-success: #4ade80;
+  --m2t-warning: #fbbf24;
+  --m2t-danger: #f87171;
+  --m2t-info: #38bdf8;
+  --m2t-shadow-sm: 0 1px 2px rgb(0 0 0 / 0.3);
+  --m2t-shadow: 0 1px 2px rgb(0 0 0 / 0.3), 0 8px 24px -10px rgb(0 0 0 / 0.5);
+  --m2t-shadow-hover: 0 2px 4px rgb(0 0 0 / 0.3), 0 22px 44px -16px rgb(0 0 0 / 0.65);
+  color-scheme: dark;
+}
+
+@media (prefers-color-scheme: dark) {
+  .m2t[data-theme='auto'] {
+    --m2t-accent: #818cf8;
+    --m2t-accent-2: #f472b6;
+    --m2t-accent-contrast: #0b1020;
+    --m2t-accent-text: color-mix(in srgb, var(--m2t-accent) 78%, #ffffff);
+    --m2t-accent-soft: color-mix(in srgb, var(--m2t-accent) 18%, transparent);
+    --m2t-surface: #131a28;
+    --m2t-surface-2: #182133;
+    --m2t-surface-3: #212c42;
+    --m2t-text: #eef1f7;
+    --m2t-text-2: #c4cbd8;
+    --m2t-text-muted: #97a2b6;
+    --m2t-border: #253047;
+    --m2t-border-strong: #34415e;
+    --m2t-line: #2e3a55;
+    --m2t-success: #4ade80;
+    --m2t-warning: #fbbf24;
+    --m2t-danger: #f87171;
+    --m2t-info: #38bdf8;
+    --m2t-shadow-sm: 0 1px 2px rgb(0 0 0 / 0.3);
+    --m2t-shadow: 0 1px 2px rgb(0 0 0 / 0.3), 0 8px 24px -10px rgb(0 0 0 / 0.5);
+    --m2t-shadow-hover: 0 2px 4px rgb(0 0 0 / 0.3), 0 22px 44px -16px rgb(0 0 0 / 0.65);
+    color-scheme: dark;
+  }
+}
+
+/* ---- density ------------------------------------------------------------------------------- */
+
+.m2t[data-density='compact'] {
+  --m2t-gap: 0.875rem;
+  --m2t-pad-y: 0.75rem;
+  --m2t-pad-x: 0.9rem;
+  --m2t-stack: 0.375rem;
+  --m2t-title-size: 0.9688rem;
+  --m2t-text-base: 0.875rem;
+  --m2t-marker-size-lg: 30px;
+  --m2t-marker-size-md: 24px;
+  --m2t-marker-size: 12px;
+}
+
+.m2t[data-density='spacious'] {
+  --m2t-gap: 2.5rem;
+  --m2t-pad-y: 1.5rem;
+  --m2t-pad-x: 1.75rem;
+  --m2t-stack: 0.7rem;
+  --m2t-title-size: 1.1875rem;
+  --m2t-text-base: 1rem;
+  --m2t-marker-size-lg: 42px;
+}
+
+/* ---- appearances --------------------------------------------------------------------------- */
+
+/* minimal: flat, hairline, no shadows */
+.m2t[data-appearance='minimal'] {
+  --m2t-shadow: none;
+  --m2t-shadow-hover: none;
+  --m2t-shadow-sm: none;
+  --m2t-radius: 10px;
+  --m2t-line-width: 1.5px;
+  --m2t-title-weight: 600;
+}
+
+/* editorial: serif display type, rules instead of cards, ink-like accent */
+.m2t[data-appearance='editorial'] {
+  --m2t-font-display: var(--m2t-font-serif);
+  --m2t-accent: #b4442c;
+  --m2t-accent-2: #7c2d12;
+  --m2t-radius: 2px;
+  --m2t-shadow: none;
+  --m2t-shadow-hover: none;
+  --m2t-shadow-sm: none;
+  --m2t-line-width: 1px;
+  --m2t-line: color-mix(in srgb, var(--m2t-text) 22%, transparent);
+  --m2t-title-size: 1.3125rem;
+  --m2t-title-weight: 600;
+}
+.m2t[data-appearance='editorial'][data-theme='dark'] {
+  --m2t-accent: #f0997b;
+}
+@media (prefers-color-scheme: dark) {
+  .m2t[data-appearance='editorial'][data-theme='auto'] {
+    --m2t-accent: #f0997b;
+  }
+}
+
+/* vibrant: gradients, bolder weight, livelier accents */
+.m2t[data-appearance='vibrant'] {
+  --m2t-accent: #7c3aed;
+  --m2t-accent-2: #db2777;
+  --m2t-radius: 18px;
+  --m2t-title-weight: 700;
+  --m2t-line: color-mix(in srgb, var(--m2t-accent) 20%, #dfe3ea);
+}
+.m2t[data-appearance='vibrant'][data-theme='dark'] {
+  --m2t-accent: #a78bfa;
+  --m2t-accent-2: #f472b6;
+  --m2t-line: color-mix(in srgb, var(--m2t-accent) 28%, #2e3a55);
+}
+@media (prefers-color-scheme: dark) {
+  .m2t[data-appearance='vibrant'][data-theme='auto'] {
+    --m2t-accent: #a78bfa;
+    --m2t-accent-2: #f472b6;
+    --m2t-line: color-mix(in srgb, var(--m2t-accent) 28%, #2e3a55);
+  }
+}
+
+/* glass: translucent surfaces over a soft aurora backdrop */
+.m2t[data-appearance='glass'] {
+  --m2t-surface: rgb(255 255 255 / 0.62);
+  --m2t-surface-2: rgb(255 255 255 / 0.42);
+  --m2t-surface-3: rgb(15 23 42 / 0.08);
+  --m2t-border: rgb(255 255 255 / 0.78);
+  --m2t-border-strong: rgb(15 23 42 / 0.13);
+  --m2t-line: rgb(15 23 42 / 0.15);
+  --m2t-shadow: inset 0 1px 0 rgb(255 255 255 / 0.7), 0 10px 32px -14px rgb(30 41 82 / 0.28);
+  --m2t-shadow-hover: inset 0 1px 0 rgb(255 255 255 / 0.7), 0 24px 48px -18px rgb(30 41 82 / 0.38);
+  --m2t-glass-base: #eef1f8;
+  --m2t-radius: 18px;
+}
+.m2t[data-appearance='glass'][data-theme='dark'] {
+  --m2t-surface: rgb(24 31 50 / 0.55);
+  --m2t-surface-2: rgb(24 31 50 / 0.4);
+  --m2t-surface-3: rgb(255 255 255 / 0.08);
+  --m2t-border: rgb(255 255 255 / 0.1);
+  --m2t-border-strong: rgb(255 255 255 / 0.16);
+  --m2t-line: rgb(255 255 255 / 0.14);
+  --m2t-shadow: inset 0 1px 0 rgb(255 255 255 / 0.06), 0 12px 36px -14px rgb(0 0 0 / 0.6);
+  --m2t-shadow-hover: inset 0 1px 0 rgb(255 255 255 / 0.08), 0 26px 50px -18px rgb(0 0 0 / 0.7);
+  --m2t-glass-base: #0b1020;
+}
+@media (prefers-color-scheme: dark) {
+  .m2t[data-appearance='glass'][data-theme='auto'] {
+    --m2t-surface: rgb(24 31 50 / 0.55);
+    --m2t-surface-2: rgb(24 31 50 / 0.4);
+    --m2t-surface-3: rgb(255 255 255 / 0.08);
+    --m2t-border: rgb(255 255 255 / 0.1);
+    --m2t-border-strong: rgb(255 255 255 / 0.16);
+    --m2t-line: rgb(255 255 255 / 0.14);
+    --m2t-shadow: inset 0 1px 0 rgb(255 255 255 / 0.06), 0 12px 36px -14px rgb(0 0 0 / 0.6);
+    --m2t-shadow-hover: inset 0 1px 0 rgb(255 255 255 / 0.08), 0 26px 50px -18px rgb(0 0 0 / 0.7);
+    --m2t-glass-base: #0b1020;
+  }
+}
