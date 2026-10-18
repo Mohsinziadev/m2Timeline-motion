@@ -15,6 +15,12 @@ Pre-1.0 releases may contain breaking changes in minor versions; they are always
 
 ## [Unreleased]
 
+## [0.1.1] - 2026-10-18
+
+### Changed
+
+- README links to the live demo on M2Toolkit. No code changes.
+
 ## [0.1.0] - 2026-10-18
 
 ### Added

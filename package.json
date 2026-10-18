@@ -1,6 +1,6 @@
 {
   "name": "m2timeline-motion",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Beautiful, accessible, motion-rich React timelines and progress bars: 14 timeline layouts plus progress bars, segmented progress, steppers and gauges. Zero dependencies, SSR-safe, tree-shakeable.",
   "keywords": [
     "react",
