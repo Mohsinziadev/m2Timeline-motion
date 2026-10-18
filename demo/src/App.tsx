@@ -8,12 +8,16 @@ import { anchorFor, useRoute, useView, viewFor } from './router';
 
 type SiteTheme = 'light' | 'dark';
 
+/** Only the theme toggle writes this; without it the page is dark, whatever the system setting. */
+const THEME_KEY = 'm2t-theme-choice';
+
 /** Sections of the Docs view, for its scroll spy (the other views' sections are hidden while reading). */
 const DOC_IDS = SECTION_IDS.filter((id) => viewFor(`#${id}`) === 'docs');
 
 export function App() {
   // Server render and hydration always start light; the saved / system theme applies after mount.
-  const [theme, setTheme] = useState<SiteTheme>('light');
+  // Server render and hydration start dark (the default); a saved light choice applies after mount.
+  const [theme, setTheme] = useState<SiteTheme>('dark');
   const [route] = useRoute();
   const view = useView();
   const [menuOpen, setMenuOpen] = useState(false);
@@ -21,27 +25,32 @@ export function App() {
   const withSidebar = route === 'progress' || view === 'docs';
   const active = useScrollSpy(useMemo(() => (route === 'package' && view === 'docs' ? DOC_IDS : []), [route, view]));
 
+  // Dark by default; only a visitor's own toggle choice (saved under its own key) switches to light.
   useEffect(() => {
     let saved: string | null = null;
     try {
-      saved = localStorage.getItem('m2t-site-theme');
+      saved = localStorage.getItem(THEME_KEY);
     } catch {
       /* storage unavailable */
     }
-    // Light by default; only a visitor's own choice (the toggle) switches to dark.
-    if (saved !== 'dark') return;
-    // eslint-disable-next-line react-hooks/set-state-in-effect -- reading the saved preference after hydration
-    setTheme('dark');
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- reading the saved choice after hydration
+    if (saved === 'light') setTheme('light');
   }, []);
 
   useEffect(() => {
     document.documentElement.dataset.theme = theme;
-    try {
-      localStorage.setItem('m2t-site-theme', theme);
-    } catch {
-      /* storage unavailable */
-    }
   }, [theme]);
+
+  const toggleTheme = () =>
+    setTheme((t) => {
+      const next = t === 'dark' ? 'light' : 'dark';
+      try {
+        localStorage.setItem(THEME_KEY, next);
+      } catch {
+        /* storage unavailable */
+      }
+      return next;
+    });
 
   useEffect(() => {
     document.title =
@@ -84,7 +93,7 @@ export function App() {
         view={view}
         withSidebar={withSidebar}
         theme={theme}
-        onToggleTheme={() => setTheme((t) => (t === 'dark' ? 'light' : 'dark'))}
+        onToggleTheme={toggleTheme}
         menuOpen={menuOpen}
         onToggleMenu={() => setMenuOpen((o) => !o)}
       />

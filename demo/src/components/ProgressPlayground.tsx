@@ -37,7 +37,7 @@ const initial: State = {
   size: 'md',
   tone: 'accent',
   color: '#db2777',
-  gradient: true,
+  gradient: false,
   color2: '#f472b6',
   status: 'loading',
   valuePosition: 'top',

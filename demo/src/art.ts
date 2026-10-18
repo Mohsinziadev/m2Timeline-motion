@@ -8,22 +8,14 @@ function svg(content: string, w = 960, h = 600) {
   )}`;
 }
 
-/** Soft abstract gradient art. */
+/** Soft, flat abstract art: a light base colour with a few calm shapes (no gradients). */
 export function abstractArt(seed: number, a: string, b: string) {
   const r = (n: number) => ((Math.sin(seed * 9301 + n * 49297) + 1) / 2) * 0.8 + 0.1;
   return svg(`
-    <defs>
-      <linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="${a}"/><stop offset="1" stop-color="${b}"/></linearGradient>
-      <radialGradient id="h" cx="${r(1)}" cy="${r(2)}" r="0.7"><stop offset="0" stop-color="#fff" stop-opacity=".55"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></radialGradient>
-      <filter id="b"><feGaussianBlur stdDeviation="40"/></filter>
-    </defs>
-    <rect width="960" height="600" fill="url(#g)"/>
-    <g filter="url(#b)" opacity=".75">
-      <circle cx="${r(3) * 960}" cy="${r(4) * 600}" r="${120 + r(5) * 160}" fill="${b}"/>
-      <circle cx="${r(6) * 960}" cy="${r(7) * 600}" r="${100 + r(8) * 140}" fill="${a}"/>
-    </g>
-    <rect width="960" height="600" fill="url(#h)"/>
-    <g fill="none" stroke="#fff" stroke-opacity=".35" stroke-width="2">
+    <rect width="960" height="600" fill="${a}"/>
+    <circle cx="${r(3) * 960}" cy="${r(4) * 600}" r="${150 + r(5) * 150}" fill="${b}" opacity=".7"/>
+    <circle cx="${r(6) * 960}" cy="${r(7) * 600}" r="${110 + r(8) * 120}" fill="#fff" opacity=".45"/>
+    <g fill="none" stroke="#fff" stroke-opacity=".7" stroke-width="3">
       <circle cx="${r(9) * 960}" cy="${r(10) * 600}" r="${60 + r(11) * 90}"/>
       <path d="M0 ${420 + r(12) * 80} C 240 ${340 + r(13) * 120}, 520 ${520 - r(14) * 120}, 960 ${380 + r(15) * 90}"/>
     </g>`);
@@ -40,23 +32,18 @@ export function spaceArt(seed: number, planet: string, glow: string) {
   }).join('');
   const cx = 300 + r(400) * 360;
   return svg(`
-    <defs>
-      <radialGradient id="sky" cx=".5" cy=".2" r="1"><stop offset="0" stop-color="#1b2550"/><stop offset="1" stop-color="#05060f"/></radialGradient>
-      <radialGradient id="p" cx=".35" cy=".3" r=".8"><stop offset="0" stop-color="${glow}"/><stop offset=".55" stop-color="${planet}"/><stop offset="1" stop-color="#05060f"/></radialGradient>
-      <filter id="b"><feGaussianBlur stdDeviation="30"/></filter>
-    </defs>
-    <rect width="960" height="600" fill="url(#sky)"/>
+    <rect width="960" height="600" fill="#1d2440"/>
     ${stars}
-    <circle cx="${cx}" cy="${360 + r(401) * 120}" r="190" fill="${glow}" opacity=".35" filter="url(#b)"/>
-    <circle cx="${cx}" cy="${360 + r(401) * 120}" r="170" fill="url(#p)"/>`);
+    <circle cx="${cx}" cy="${360 + r(401) * 120}" r="190" fill="${glow}" opacity=".18"/>
+    <circle cx="${cx}" cy="${360 + r(401) * 120}" r="170" fill="${planet}"/>
+    <circle cx="${cx - 40}" cy="${330 + r(401) * 120}" r="120" fill="${glow}" opacity=".35"/>`);
 }
 
 /** Simple monogram logo tile. */
-export function logoArt(letter: string, a: string, b: string) {
+export function logoArt(letter: string, a: string, _b?: string) {
   return svg(
-    `<defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="${a}"/><stop offset="1" stop-color="${b}"/></linearGradient></defs>
-     <rect width="96" height="96" rx="22" fill="url(#g)"/>
-     <text x="48" y="62" text-anchor="middle" font-family="Inter, system-ui, sans-serif" font-size="44" font-weight="700" fill="#fff">${letter}</text>`,
+    `<rect width="96" height="96" rx="22" fill="${a}"/>
+     <text x="48" y="62" text-anchor="middle" font-family="Figtree, system-ui, sans-serif" font-size="44" font-weight="700" fill="#fff">${letter}</text>`,
     96,
     96,
   );

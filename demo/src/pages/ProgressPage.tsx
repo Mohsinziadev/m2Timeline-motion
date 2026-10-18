@@ -285,7 +285,7 @@ const codeStatus = `<ProgressBar label="Uploading…" info="Files upload in the 
 <ProgressBar aria-label="Download" value={50} color="#fbbf24" valuePosition="start" onCancel={cancel} />`;
 
 const codeStyles = `<ProgressBar variant="segmented" segments={4} value={40} />
-<ProgressBar thumb value={52} color={['#be185d', '#f472b6']} />
+<ProgressBar thumb value={52} color="#db2777" />
 <ProgressBar milestones={[25, 50, 75, 100]} variant="segmented" value={38} />
 <ProgressBar variant="dots" value={45} />
 <ProgressBar variant="bars" value={74} />
@@ -424,8 +424,8 @@ export function ProgressPage({ theme }: { theme: SiteTheme }) {
                 onCancel={() => {}}
               />
             </StyleCard>
-            <StyleCard title="Thumb & gradient">
-              <ProgressBar theme={theme} thumb value={52} color={['#be185d', '#f472b6']} aria-label="Thumb" onCancel={() => {}} />
+            <StyleCard title="Thumb">
+              <ProgressBar theme={theme} thumb value={52} color="#db2777" aria-label="Thumb" onCancel={() => {}} />
             </StyleCard>
             <StyleCard title="Milestones">
               <ProgressBar
@@ -448,14 +448,7 @@ export function ProgressPage({ theme }: { theme: SiteTheme }) {
               <ProgressBar theme={theme} variant="slanted" value={86} color="#db2777" aria-label="Slanted" onCancel={() => {}} />
             </StyleCard>
             <StyleCard title="Chevron">
-              <ProgressBar
-                theme={theme}
-                variant="chevron"
-                value={40}
-                color={['#ec4899', '#f9a8d4']}
-                aria-label="Chevron"
-                onCancel={() => {}}
-              />
+              <ProgressBar theme={theme} variant="chevron" value={40} color="#ec4899" aria-label="Chevron" onCancel={() => {}} />
             </StyleCard>
             <StyleCard title="Outlined · value inside">
               <ProgressBar
@@ -463,7 +456,7 @@ export function ProgressPage({ theme }: { theme: SiteTheme }) {
                 variant="outlined"
                 valuePosition="inside"
                 value={52}
-                color={['#be185d', '#f472b6']}
+                color="#db2777"
                 size="lg"
                 aria-label="Outlined"
                 onCancel={() => {}}
@@ -487,7 +480,7 @@ export function ProgressPage({ theme }: { theme: SiteTheme }) {
                 variant="outlined"
                 valuePosition="inside"
                 value={58}
-                color={['#db2777', '#f9a8d4']}
+                color="#db2777"
                 size="xl"
                 formatValue={() => 'Growing in progress…'}
                 aria-label="Growing"
@@ -499,7 +492,7 @@ export function ProgressPage({ theme }: { theme: SiteTheme }) {
                 valuePosition="inside"
                 value={3}
                 max={10}
-                color={['#db2777', '#f472b6']}
+                color="#db2777"
                 size="xl"
                 formatValue={(v, m) => `${v} / ${m}`}
                 aria-label="Fraction"
@@ -632,7 +625,7 @@ export function ProgressPage({ theme }: { theme: SiteTheme }) {
           id="pg-rings"
           eyebrow="Circular"
           title="Rings and gauges"
-          lead="Full rings or open gauges with any sweep, sizes from icon to hero, gradients and indeterminate spinners."
+          lead="Full rings or open gauges with any sweep, sizes from icon to hero, and indeterminate spinners."
           code={codeRings}
         >
           <div className="prings">
@@ -665,7 +658,7 @@ export function ProgressPage({ theme }: { theme: SiteTheme }) {
                 sublabel={s === 'xs' || s === 'sm' ? undefined : 'Grade Rating'}
               />
             ))}
-            <CircularProgress theme={theme} value={82} size="lg" color={['#6366f1', '#ec4899']} glow sublabel="Gradient" />
+            <CircularProgress theme={theme} value={82} size="lg" color="#6366f1" sublabel="Score" />
             <CircularProgress theme={theme} value={64} size="lg" variant="gauge" arc={180} color="#0ea5e9" sublabel="Half gauge" />
             <CircularProgress theme={theme} indeterminate size="sm" aria-label="Loading" />
           </div>

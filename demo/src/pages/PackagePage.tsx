@@ -1,5 +1,4 @@
 import type { LayoutVariant } from 'm2timeline-motion';
-import { Timeline } from 'm2timeline-motion';
 import { useState, type CSSProperties, type ReactNode } from 'react';
 import changelog from '../../../CHANGELOG.md?raw';
 import customCode from '../../../examples/custom-layout.tsx?raw';
@@ -11,15 +10,13 @@ import { callbackProps, cssVars, eventFields, hooksAndUtils, layoutProps, shared
 import { ApiTable } from '../components/ApiReference';
 import { Callout, InstallPanel, MiniMarkdown } from '../components/docs-ui';
 import { Examples } from '../components/Examples';
-import { LayoutGallery } from '../components/LayoutGallery';
-import { Playground } from '../components/Playground';
 import { CodeBlock } from '../components/ui';
 import { Icon } from '../icons';
 import { NAV } from '../docs-nav';
 import { PACKAGES_URL, PKG, RELATED, SIZES } from '../meta';
 import { variantInfo } from '../variants';
-import { datasets } from '../data';
 import type { View } from '../router';
+import { Home } from './HomeSections';
 
 const IMPORTS = `import { Timeline } from 'm2timeline-motion';
 import 'm2timeline-motion/styles.css';`;
@@ -46,7 +43,7 @@ const THEMING = `/* All timelines */
 .m2t {
   --m2t-accent: #6d5bd0;
   --m2t-radius: 10px;
-  --m2t-font: 'Inter', system-ui, sans-serif;
+  --m2t-font: 'Figtree', system-ui, sans-serif;
   --m2t-sticky-top: 64px; /* below your fixed header */
 }
 
@@ -125,295 +122,21 @@ function Section({ id, title, eyebrow, children }: { id: string; title: string; 
   );
 }
 
-/** The six things the package does, in the reader's words (facts from package.json and the docs below). */
-const FEATURES: Array<{ icon: Parameters<typeof Icon>[0]['name']; title: string; body: string; href?: string }> = [
-  {
-    icon: 'layers',
-    title: '14 timeline layouts',
-    body: 'From a classic vertical line to Gantt charts, roadmaps, changelogs and activity feeds — all from the same event data.',
-    href: '#/components',
-  },
-  {
-    icon: 'bar',
-    title: 'Progress components',
-    body: 'Progress bars, segmented progress, steppers and gauges that share the timelines’ theme.',
-    href: '#/progress',
-  },
-  {
-    icon: 'motion',
-    title: 'Motion that respects users',
-    body: 'Seven entrance animations, scroll progress and animated connectors. Reduced-motion settings are honoured automatically.',
-  },
-  {
-    icon: 'check',
-    title: 'Accessible by default',
-    body: 'Real components with keyboard support, visible focus states and screen-reader text — not static mockups.',
-  },
-  {
-    icon: 'server',
-    title: 'SSR & App Router ready',
-    body: 'Deterministic server rendering, and every component module carries a ‘use client’ directive for Next.js.',
-  },
-  {
-    icon: 'package',
-    title: 'Zero dependencies',
-    body: 'Tree-shakeable ESM and CJS with TypeScript types. One layout is about 10.8 kB gzip.',
-  },
-];
-
-const EXPLORE: Array<{ href: string; icon: Parameters<typeof Icon>[0]['name']; title: string; body: string; cta: string }> = [
-  {
-    href: '#/components',
-    icon: 'layers',
-    title: 'Components',
-    body: `Browse all ${variantInfo.length} layouts with live previews and their code.`,
-    cta: 'Browse layouts',
-  },
-  {
-    href: '#/playground',
-    icon: 'sliders',
-    title: 'Playground',
-    body: 'Tune every prop, edit the data and copy the generated code.',
-    cta: 'Open playground',
-  },
-  {
-    href: '#/docs',
-    icon: 'book',
-    title: 'Documentation',
-    body: 'Guides, theming, accessibility, SSR and the full API reference.',
-    cta: 'Read the docs',
-  },
-];
-
-function Overview({ theme }: { theme: 'light' | 'dark' }) {
-  // A short, real timeline for the hero: the first steps of the CI/CD sample.
-  const preview = datasets.pipeline.slice(0, 4);
-  return (
-    <>
-      <section id="overview" className="ov-hero" aria-labelledby="phero-title">
-        <div className="ov-hero__copy">
-          <div className="ov-hero__pills">
-            <span className="pill pill--live">
-              <span className="pill__dot" aria-hidden="true" />
-              Live, interactive examples
-            </span>
-            <span className="pill">React · TypeScript</span>
-            <span className="pill">v{PKG.version}</span>
-            <span className="pill">{PKG.license}</span>
-          </div>
-          <h1 id="phero-title" className="ov-hero__title">
-            Timelines, designed for <span>real interfaces.</span>
-          </h1>
-          <p className="ov-hero__lead">
-            {variantInfo.length} production-ready timeline layouts and four progress components for React — accessible, motion-rich and
-            themeable, with zero dependencies.
-          </p>
-          <InstallPanel />
-          <div className="ov-hero__actions">
-            <a className="btn btn--primary" href="#/components">
-              Browse {variantInfo.length} layouts <Icon name="arrow" size={15} />
-            </a>
-            <a className="btn btn--secondary" href="#/playground">
-              Open playground
-            </a>
-            <a className="btn btn--ghost" href="#/docs">
-              Documentation
-            </a>
-          </div>
-        </div>
-        <div className="ov-hero__demo" aria-label="Live example: a deployment pipeline timeline">
-          <div className="ov-window">
-            <div className="ov-window__bar" aria-hidden="true">
-              <span />
-              <span />
-              <span />
-              <code>{'<VerticalTimeline events={pipeline} />'}</code>
-            </div>
-            <div className="ov-window__body">
-              <Timeline variant="vertical" events={preview} theme={theme} density="compact" animation="none" expandable={false} />
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <dl className="ov-facts">
-        {[
-          ['Version', PKG.version],
-          ['License', PKG.license],
-          [
-            'Peer dependency',
-            `React ${PKG.react
-              .replace(/\^/g, '')
-              .replace(/\.0\.0/g, '')
-              .replace(/\s*\|\|\s*/g, ' or ')}`,
-          ],
-          ['Runtime dependencies', String(PKG.dependencies)],
-          ['One layout', `≈ ${SIZES[0].value} gzip`],
-          ['Formats', 'ESM · CJS · .d.ts'],
-        ].map(([k, v]) => (
-          <div key={k}>
-            <dt>{k}</dt>
-            <dd>{v}</dd>
-          </div>
-        ))}
-      </dl>
-
-      <section className="ov-sec" aria-labelledby="ov-features">
-        <header className="ov-sec__head">
-          <p className="eyebrow">Why m2timeline-motion</p>
-          <h2 id="ov-features" className="ov-sec__title">
-            Everything a timeline needs, nothing it doesn’t
-          </h2>
-        </header>
-        <ul className="ov-features">
-          {FEATURES.map((f) => (
-            <li key={f.title} className="ov-feature">
-              <span className="ov-feature__icon" aria-hidden="true">
-                <Icon name={f.icon} size={18} />
-              </span>
-              <h3 className="ov-feature__title">{f.href ? <a href={f.href}>{f.title}</a> : f.title}</h3>
-              <p className="ov-feature__body">{f.body}</p>
-            </li>
-          ))}
-        </ul>
-      </section>
-
-      <section className="ov-sec" aria-labelledby="ov-start">
-        <header className="ov-sec__head">
-          <p className="eyebrow">Quick start</p>
-          <h2 id="ov-start" className="ov-sec__title">
-            Up and running in three steps
-          </h2>
-        </header>
-        <ol className="ov-steps">
-          <li className="ov-step">
-            <span className="ov-step__n" aria-hidden="true">
-              1
-            </span>
-            <div className="ov-step__body">
-              <h3 className="ov-step__title">Install</h3>
-              <p className="ov-step__text">React 18 or 19 is the only peer dependency.</p>
-              <InstallPanel compact />
-            </div>
-          </li>
-          <li className="ov-step">
-            <span className="ov-step__n" aria-hidden="true">
-              2
-            </span>
-            <div className="ov-step__body">
-              <h3 className="ov-step__title">Import a layout and the stylesheet</h3>
-              <p className="ov-step__text">Import the CSS once, in your entry file or root layout.</p>
-              <CodeBlock code={IMPORTS} title="main.tsx" />
-            </div>
-          </li>
-          <li className="ov-step">
-            <span className="ov-step__n" aria-hidden="true">
-              3
-            </span>
-            <div className="ov-step__body">
-              <h3 className="ov-step__title">Render it with your events</h3>
-              <p className="ov-step__text">
-                Only <code>id</code> and <code>title</code> are required on each event.
-              </p>
-              <CodeBlock code={quickstartCode} title="QuickStart.tsx" maxHeight={300} />
-            </div>
-          </li>
-        </ol>
-      </section>
-
-      <section className="ov-sec" aria-labelledby="ov-explore">
-        <header className="ov-sec__head">
-          <p className="eyebrow">Explore</p>
-          <h2 id="ov-explore" className="ov-sec__title">
-            Where to next
-          </h2>
-        </header>
-        <ul className="ov-explore">
-          {EXPLORE.map((e) => (
-            <li key={e.href}>
-              <a className="ov-card" href={e.href}>
-                <span className="ov-card__icon" aria-hidden="true">
-                  <Icon name={e.icon} size={20} />
-                </span>
-                <span className="ov-card__title">{e.title}</span>
-                <span className="ov-card__body">{e.body}</span>
-                <span className="ov-card__cta">
-                  {e.cta} <Icon name="arrow" size={14} />
-                </span>
-              </a>
-            </li>
-          ))}
-        </ul>
-        <div className="ov-related">
-          <p className="ov-related__title">More from M2Toolkit</p>
-          <ul>
-            {RELATED.map((p) => (
-              <li key={p.slug}>
-                <a href={p.url} style={{ '--rel': p.accent } as CSSProperties}>
-                  <span className="related__dot" aria-hidden="true" />
-                  {p.title}
-                </a>
-              </li>
-            ))}
-            <li>
-              <a href={PACKAGES_URL} className="ov-related__all">
-                All packages <Icon name="external" size={13} />
-              </a>
-            </li>
-          </ul>
-        </div>
-      </section>
-    </>
-  );
-}
-
 export function PackagePage({ theme, active, view }: { theme: 'light' | 'dark'; active: string | null; view: View }) {
   const [request, setRequest] = useState<{ variant: LayoutVariant; nonce: number } | null>(null);
 
-  // "Customize" on a layout card loads it into the playground view.
+  // "Customize" loads a layout into the playground on the landing page.
   const customize = (variant: LayoutVariant) => {
     setRequest({ variant, nonce: Date.now() });
-    window.location.hash = '#/playground';
+    if (window.location.hash === '#playground') document.getElementById('playground')?.scrollIntoView({ block: 'start' });
+    else window.location.hash = '#playground';
   };
 
   return (
     <>
-      {/* Every view stays in the HTML (hidden when inactive) so the whole page is readable without JavaScript and by search engines. */}
-      <div className="pview" data-view="overview" hidden={view !== 'overview'}>
-        <Overview theme={theme} />
-      </div>
-
-      <div className="pview" data-view="components" hidden={view !== 'components'}>
-        <section id="gallery" className="psec psec--view" aria-labelledby="gallery-h">
-          <header className="vhead">
-            <div>
-              <p className="eyebrow">Components</p>
-              <h2 id="gallery-h" className="vhead__title">
-                {variantInfo.length} timeline layouts
-              </h2>
-            </div>
-            <p className="vhead__lead">
-              Every card renders the real component with sample data. Flip a card to <strong>Code</strong>, or press{' '}
-              <strong>Customize</strong> to open it in the playground.
-            </p>
-          </header>
-          <LayoutGallery theme={theme} onCustomize={customize} />
-        </section>
-      </div>
-
-      <div className="pview" data-view="playground" hidden={view !== 'playground'}>
-        <section id="playground" className="psec psec--view" aria-labelledby="playground-h">
-          <header className="vhead">
-            <div>
-              <p className="eyebrow">Playground</p>
-              <h2 id="playground-h" className="vhead__title" tabIndex={-1}>
-                Configure, preview, copy
-              </h2>
-            </div>
-            <p className="vhead__lead">Every control is a real prop. The preview and the generated code stay in sync.</p>
-          </header>
-          <Playground request={request} />
-        </section>
+      {/* Both views stay in the HTML (the inactive one hidden), so everything is readable without JavaScript and by search engines. */}
+      <div className="pview" data-view="home" hidden={view !== 'home'}>
+        <Home theme={theme} request={request} onCustomize={customize} />
       </div>
 
       <div className="pview" data-view="docs" hidden={view !== 'docs'}>

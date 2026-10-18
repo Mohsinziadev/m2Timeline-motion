@@ -142,7 +142,8 @@ export function SiteHeader({
   menuOpen: boolean;
   onToggleMenu: () => void;
 }) {
-  const current = (to: string) => (to === '#/docs' ? route === 'package' && view === 'docs' : to === '#/progress' ? route === 'progress' : false);
+  const current = (to: string) =>
+    to === '#/docs' ? route === 'package' && view === 'docs' : to === '#/progress' ? route === 'progress' : false;
   return (
     <header className="dh">
       <div className="dh__inner">

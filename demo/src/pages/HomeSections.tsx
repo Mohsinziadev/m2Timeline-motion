@@ -13,7 +13,7 @@ import quickstartCode from '../../../examples/quickstart.tsx?raw';
 import { sharedProps } from '../api-data';
 import { ApiTable } from '../components/ApiReference';
 import { InstallPanel } from '../components/docs-ui';
-import { previewEvents, snippet } from '../components/LayoutGallery';
+import { previewEvents, snippet } from '../layout-preview';
 import { Playground } from '../components/Playground';
 import { CodeBlock } from '../components/ui';
 import { Icon } from '../icons';
@@ -37,10 +37,10 @@ function SectionHead({ id, eyebrow, title, children }: { id: string; eyebrow: st
 
 /* ---- hero ---------------------------------------------------------------------------------- */
 
-const HERO_LAYOUTS: LayoutVariant[] = ['vertical', 'roadmap', 'stepper'];
+const HERO_LAYOUTS: LayoutVariant[] = ['stepper', 'vertical', 'roadmap'];
 
 function Hero({ theme, onCustomize }: { theme: Theme; onCustomize: (v: LayoutVariant) => void }) {
-  const [tab, setTab] = useState<LayoutVariant>('vertical');
+  const [tab, setTab] = useState<LayoutVariant>('stepper');
   const v = variantById[tab];
   return (
     <section id="top" className="lp-hero" aria-labelledby="phero-title">
@@ -88,7 +88,10 @@ function Hero({ theme, onCustomize }: { theme: Theme; onCustomize: (v: LayoutVar
           </div>
         </div>
         <div className="lp-demo__stage" role="tabpanel" aria-label={`${v.name} timeline, live`}>
-          <Timeline key={tab} {...({ variant: tab, events: previewEvents(v), theme, density: 'compact', ...v.galleryProps } as TimelineProps)} />
+          <Timeline
+            key={tab}
+            {...({ variant: tab, events: previewEvents(v), theme, density: 'compact', ...v.galleryProps } as TimelineProps)}
+          />
         </div>
         <div className="lp-demo__foot">
           <span className="lp-dot" aria-hidden="true" />
@@ -130,7 +133,8 @@ function LayoutBrowser({ theme, onCustomize }: { theme: Theme; onCustomize: (v: 
   return (
     <section id="layouts" className="lp-sec" aria-labelledby="layouts-h">
       <SectionHead id="layouts-h" eyebrow="Layouts" title={`${variantInfo.length} layouts, one data model`}>
-        Every layout reads the same events, so switching is one prop. Pick a layout to see it live, read its code, or open it in the playground.
+        Every layout reads the same events, so switching is one prop. Pick a layout to see it live, read its code, or open it in the
+        playground.
       </SectionHead>
       <div className="chips" role="group" aria-label="Filter layouts by category">
         <button type="button" className="chip2" aria-pressed={category === 'All'} onClick={() => setCategory('All')}>
@@ -210,7 +214,13 @@ function ProgressShowcase({ theme }: { theme: Theme }) {
     {
       name: 'StepProgress',
       title: 'Stepper',
-      node: <StepProgress theme={theme} steps={[{ label: 'Cart' }, { label: 'Shipping' }, { label: 'Payment' }, { label: 'Done' }]} current={1} />,
+      node: (
+        <StepProgress
+          theme={theme}
+          steps={[{ label: 'Cart' }, { label: 'Shipping' }, { label: 'Payment' }, { label: 'Done' }]}
+          current={1}
+        />
+      ),
     },
     { name: 'SegmentedProgress', title: 'Segmented', node: <SegmentedProgress theme={theme} segments={10} value={6} label="Chunks" /> },
     { name: 'CircularProgress', title: 'Gauge', node: <CircularProgress theme={theme} value={70} sublabel="Score" tone="success" /> },
@@ -247,9 +257,19 @@ export function Releases({ events }: { events: TimelineEvent[] }) {
 }`;
 
 const WAYS = [
-  { title: 'One component', body: '<Timeline variant="…"> switches layouts with the same data.', code: quickstartCode, file: 'QuickStart.tsx' },
+  {
+    title: 'One component',
+    body: '<Timeline variant="…"> switches layouts with the same data.',
+    code: quickstartCode,
+    file: 'QuickStart.tsx',
+  },
   { title: 'A single layout', body: `Import only the layout you use — about ${SIZES[0].value} gzip.`, code: SINGLE, file: 'Releases.tsx' },
-  { title: 'Headless', body: 'useTimeline gives you ordering, search and keyboard support for your own markup.', code: headlessCode, file: 'Headless.tsx' },
+  {
+    title: 'Headless',
+    body: 'useTimeline gives you ordering, search and keyboard support for your own markup.',
+    code: headlessCode,
+    file: 'Headless.tsx',
+  },
 ];
 
 function QuickStart() {
@@ -362,16 +382,24 @@ function PropsGlance() {
 
 /* ---- page ------------------------------------------------------------------------------------ */
 
-export function Home({ theme, request, onCustomize }: { theme: Theme; request: { variant: LayoutVariant; nonce: number } | null; onCustomize: (v: LayoutVariant) => void }) {
+export function Home({
+  theme,
+  request,
+  onCustomize,
+}: {
+  theme: Theme;
+  request: { variant: LayoutVariant; nonce: number } | null;
+  onCustomize: (v: LayoutVariant) => void;
+}) {
   return (
     <div className="lp">
       <Hero theme={theme} onCustomize={onCustomize} />
       <section id="playground" className="lp-sec" aria-labelledby="playground-h">
         <SectionHead id="playground-h" eyebrow="Playground" title="Tune it live, copy the code">
-          Every control maps to a real prop on the real component. Edit the events in the Data tab, then copy a snippet that matches what you
-          see.
+          Every control maps to a real prop on the real component. Edit the events in the Data tab, then copy a snippet that matches what
+          you see.
         </SectionHead>
-        <Playground request={request} />
+        <Playground request={request} siteTheme={theme} />
       </section>
       <LayoutBrowser theme={theme} onCustomize={onCustomize} />
       <ProgressShowcase theme={theme} />

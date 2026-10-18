@@ -26,8 +26,20 @@ interface LogEntry {
   text: string;
 }
 
-export function Playground({ request }: { request: { variant: LayoutVariant; nonce: number } | null }) {
-  const [config, setConfig] = useState<PlaygroundConfig>(() => initialConfig('vertical'));
+export function Playground({
+  request,
+  siteTheme = 'light',
+}: {
+  request: { variant: LayoutVariant; nonce: number } | null;
+  siteTheme?: 'light' | 'dark';
+}) {
+  const [config, setConfig] = useState<PlaygroundConfig>(() => ({ ...initialConfig('vertical'), theme: siteTheme }));
+
+  // The preview follows the page theme (its own Theme control can still change it).
+  useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- following the site theme toggle
+    setConfig((c) => ({ ...c, theme: siteTheme }));
+  }, [siteTheme]);
   const [tab, setTab] = useState<Tab>('layout');
   const [device, setDevice] = useState<Device>('desktop');
   const [replay, setReplay] = useState(0);
@@ -163,7 +175,7 @@ export function Playground({ request }: { request: { variant: LayoutVariant; non
                       aria-label={a.name}
                       aria-pressed={config.accent === a.value}
                       title={a.name}
-                      style={{ background: a.value || 'conic-gradient(#4f46e5, #db2777, #059669, #4f46e5)' }}
+                      style={{ background: a.value || '#4f46e5' }}
                       onClick={() => set('accent', a.value)}
                     />
                   ))}
@@ -332,7 +344,7 @@ export function Playground({ request }: { request: { variant: LayoutVariant; non
               type="button"
               className="btn btn--ghost btn--sm"
               onClick={() => {
-                setConfig(initialConfig(config.variant));
+                setConfig({ ...initialConfig(config.variant), theme: siteTheme });
                 setCustom(null);
                 setExtra([]);
               }}
