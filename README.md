@@ -2,6 +2,8 @@
 
 **Beautiful, accessible, motion-rich timelines and progress indicators for React.** Fourteen purpose-built timeline layouts and four progress components share one theme system and one motion system. Zero runtime dependencies, SSR-safe, tree-shakeable.
 
+**[Live demo →](https://www.m2toolkit.com/npm-packages/m2timeline-motion)**
+
 ```bash
 npm install m2timeline-motion
 ```
@@ -21,7 +23,7 @@ import 'm2timeline-motion/styles.css';
 - **Designed to be themed.** Light/dark/auto themes, five appearances (`modern`, `minimal`, `glass`, `editorial`, `vibrant`), accent/gradient colors, density and radius, plus 40+ CSS custom properties.
 - **TypeScript-first.** Variant-discriminated props, typed event `data`, controlled and uncontrolled state, render props and a headless `useTimeline` hook.
 
-> Run the demo playground locally with `npm run dev`. It includes a gallery of every layout, a live configurator that generates copy-ready code, real-world recipes and full docs.
+> Try it in the [live demo on M2Toolkit](https://www.m2toolkit.com/npm-packages/m2timeline-motion), or run it locally with `npm run dev`. It includes a gallery of every layout, a live configurator that generates copy-ready code, real-world recipes and full docs.
 
 ---
 
