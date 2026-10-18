@@ -27,6 +27,13 @@
   "author": "Mohsin Zia <mohsinziadev@gmail.com>",
   "license": "MIT",
   "homepage": "https://www.m2toolkit.com/npm-packages/m2timeline-motion",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Mohsinziadev/m2Timeline-motion.git"
+  },
+  "bugs": {
+    "url": "https://github.com/Mohsinziadev/m2Timeline-motion/issues"
+  },
   "type": "module",
   "sideEffects": [
     "**/*.css"

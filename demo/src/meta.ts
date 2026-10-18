@@ -1,6 +1,12 @@
 import pkg from '../../package.json';
 
 /** Real package facts, read from package.json at build time. */
+/** Repository and issue tracker, read from package.json (`git+https://….git` → web URL). */
+export const REPO_URL = String((pkg as { repository?: { url?: string } }).repository?.url ?? '')
+  .replace(/^git\+/, '')
+  .replace(/\.git$/, '');
+export const ISSUES_URL = (pkg as { bugs?: { url?: string } }).bugs?.url ?? '';
+
 export const PKG = {
   name: pkg.name,
   version: pkg.version,

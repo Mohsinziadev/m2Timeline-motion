@@ -13,7 +13,7 @@ import { Examples } from '../components/Examples';
 import { CodeBlock } from '../components/ui';
 import { Icon } from '../icons';
 import { NAV } from '../docs-nav';
-import { PACKAGES_URL, PKG, RELATED, SIZES } from '../meta';
+import { ISSUES_URL, PACKAGES_URL, PKG, RELATED, REPO_URL, SIZES } from '../meta';
 import { variantInfo } from '../variants';
 import type { View } from '../router';
 import { Home } from './HomeSections';
@@ -468,7 +468,23 @@ export function PackagePage({ theme, active, view }: { theme: 'light' | 'dark'; 
                     </div>
                     <div>
                       <dt>Source repository</dt>
-                      <dd className="pinfo__missing">Not public yet</dd>
+                      <dd>
+                        {REPO_URL ? (
+                          <a href={REPO_URL} target="_blank" rel="noopener noreferrer">
+                            GitHub
+                          </a>
+                        ) : (
+                          <span className="pinfo__missing">Not public yet</span>
+                        )}
+                        {ISSUES_URL && (
+                          <>
+                            {' · '}
+                            <a href={ISSUES_URL} target="_blank" rel="noopener noreferrer">
+                              Issues
+                            </a>
+                          </>
+                        )}
+                      </dd>
                     </div>
                   </dl>
                 </div>
